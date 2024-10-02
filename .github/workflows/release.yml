@@ -4,8 +4,12 @@ on:
   push:
     branches: ["master"]
     #  - master
-    tags: []
+    tags: ["v*.*.*"]
     #  - v*
+
+permissions:
+  contents: write
+
 
 jobs:
   goreleaser:
