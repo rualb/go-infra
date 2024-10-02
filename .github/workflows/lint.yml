@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - main
-    tags:
-      - v*
+    #tags:
+    #  - v*
   pull_request:
 
 
 jobs:
   golangci:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
