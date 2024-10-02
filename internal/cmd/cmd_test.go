@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"go-infra/internal/config"
 	"go-infra/internal/tool/toolhttp"
 	"os"
 	"strings"
@@ -12,6 +13,9 @@ import (
 // TestHealthController_Check_Stats tests the ?cmd=stats case in the Check method
 func TestCmd(t *testing.T) {
 	// Setup Echo context
+	config.Testing = true
+
+	//
 
 	os.Setenv("APP_SMS_GW_STDOUT", "1")
 	os.Setenv("APP_EMAIL_GW_STDOUT", "1")

@@ -44,6 +44,7 @@ func MustNewAppServiceProd() AppService {
 
 // MustNewAppServiceTesting testing
 func MustNewAppServiceTesting() AppService {
+
 	return MustNewAppServiceProd()
 }
 

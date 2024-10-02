@@ -10,5 +10,5 @@ dist/
 
 config.development.json
 config.staging.json
-config.testing.json
+
 

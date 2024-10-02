@@ -23,8 +23,11 @@ var (
 	AppDate     = ""
 	ShortCommit = ""
 )
+var (
+	Testing = false
+)
 
-type FlagConfig struct {
+type CmdLineFlags struct {
 	Config     string
 	CertDir    string
 	ConfigsDir string
@@ -44,19 +47,19 @@ var envNames = []string{
 	envDevelopment, envTesting, envStaging, envProduction,
 }
 
-var flagConfig FlagConfig = FlagConfig{}
+var CmdLine = CmdLineFlags{}
 
 // ReadFlags read app flags
 func ReadFlags() {
 
 	_ = os.Args
-	flag.StringVar(&flagConfig.Config, "config", "", "Path to dir with config files")
-	flag.StringVar(&flagConfig.CertDir, "cert-dir", "", "Path to dir with cert files")
-	flag.StringVar(&flagConfig.Env, "env", "", "Environment: development, testing, staging, production")
-	flag.StringVar(&flagConfig.Name, "name", "", "App name")
-	flag.StringVar(&flagConfig.ConfigsDir, "configs-dir", "", "Path to dir with configs")
+	flag.StringVar(&CmdLine.Config, "config", "", "Path to dir with config files")
+	flag.StringVar(&CmdLine.CertDir, "cert-dir", "", "Path to dir with cert files")
+	flag.StringVar(&CmdLine.Env, "env", "", "Environment: development, testing, staging, production")
+	flag.StringVar(&CmdLine.Name, "name", "", "App name")
+	flag.StringVar(&CmdLine.ConfigsDir, "configs-dir", "", "Path to dir with configs")
 
-	flag.BoolVar(&flagConfig.Version, "version", false, "App version")
+	flag.BoolVar(&CmdLine.Version, "version", false, "App version")
 
 	flag.Parse() // dont use from init()
 
@@ -66,7 +69,7 @@ func ReadFlags() {
 
 func version() {
 
-	if flagConfig.Version {
+	if CmdLine.Version {
 		fmt.Printf("Version: %s\n", AppVersion)
 		fmt.Printf("Commit: %s\n", AppCommit)
 		fmt.Printf("Date: %s\n", AppDate)
@@ -184,11 +187,11 @@ type AppConfigLang struct {
 }
 
 type AppConfigMod struct {
-	Name  string `json:"-"`
-	Env   string `json:"env"` // prod||'' dev stage
-	Debug bool   `json:"-"`
-	Title string `json:"title"`
-
+	Name       string   `json:"-"`
+	Env        string   `json:"env"` // prod||'' dev stage
+	Debug      bool     `json:"-"`
+	Title      string   `json:"title"`
+	Testing    bool     `json:"-"`
 	ConfigPath []string `json:"-"` // []string{".", os.Getenv("APP_CONFIG"), flagAppConfig}
 }
 type AppConfig struct {
@@ -298,14 +301,14 @@ func NewAppConfig() *AppConfig {
 func (x *AppConfig) readEnvName() error {
 	reader := NewEnvReader()
 	// APP_ENV -env
-	reader.String(&x.Env, "env", &flagConfig.Env)
-	reader.String(&x.Name, "name", &flagConfig.Name)
+	reader.String(&x.Env, "env", &CmdLine.Env)
+	reader.String(&x.Name, "name", &CmdLine.Name)
 
 	if err := x.validateEnv(); err != nil {
 		return err
 	}
 
-	configPath := slices.Concat(strings.Split(os.Getenv("APP_CONFIG"), ";"), strings.Split(flagConfig.Config, ";"))
+	configPath := slices.Concat(strings.Split(os.Getenv("APP_CONFIG"), ";"), strings.Split(CmdLine.Config, ";"))
 	configPath = slices.Compact(configPath)
 	configPath = slices.DeleteFunc(
 		configPath,
@@ -322,6 +325,10 @@ func (x *AppConfig) readEnvName() error {
 
 	if len(configPath) == 0 {
 		configPath = []string{"."} // default
+	}
+
+	if Testing {
+		configPath = []string{} // load nothing
 	}
 
 	xlog.Info("Config path: %v", configPath)
@@ -362,8 +369,8 @@ func (x *AppConfig) readEnvVar() error {
 	// General configuration
 	reader.String(&x.Title, "title", nil)
 	reader.String(&x.HTTPServer.Listen, "http_listen", nil)
-	reader.String(&x.HTTPServer.CertDir, "cert_dir", &flagConfig.CertDir)
-	reader.String(&x.Configs.Dir, "configs_dir", &flagConfig.ConfigsDir)
+	reader.String(&x.HTTPServer.CertDir, "cert_dir", &CmdLine.CertDir)
+	reader.String(&x.Configs.Dir, "configs_dir", &CmdLine.ConfigsDir)
 
 	if reader.envError != nil {
 		return reader.envError
@@ -373,6 +380,10 @@ func (x *AppConfig) readEnvVar() error {
 }
 
 func (x *AppConfig) validateEnv() error {
+
+	if Testing {
+		x.Env = envTesting
+	}
 
 	if x.Env == "" {
 		x.Env = envProduction
@@ -456,6 +467,7 @@ func (x *AppConfigSource) Load() error {
 		for i := 0; i < len(res.ConfigPath); i++ {
 
 			dir := res.ConfigPath[i]
+
 			fileName := fmt.Sprintf("config.%s.json", res.Env)
 
 			xlog.Info("Loading config from: %v", dir)

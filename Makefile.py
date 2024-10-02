@@ -6,7 +6,7 @@ import sys
 """
 git init
 git add .
-git commit -m ""
+git commit -m "-"
 git tag "$(cat VERSION)"
 
 #BINARY_NAME = "app.exe" if os.name == "nt" else "app"
