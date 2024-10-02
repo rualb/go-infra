@@ -14,12 +14,12 @@ builds:
       - CGO_ENABLED=0
       - GO111MODULE=on
     goos:
-      #- linux
+      - linux
       - windows
-      #- darwin
+      - darwin
     goarch:
       - amd64
-      #- arm64
+      - arm64
     ignore:
       - goos: windows
         goarch: arm
@@ -29,7 +29,11 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
-
+    files:
+      - LICENSE
+      - README.md
+      - src: "configs/go-infra/*"
+        dst: .
 checksum:
-  algorithm: sha256
+  algorithm: sha512
   

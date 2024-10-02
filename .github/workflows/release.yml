@@ -2,10 +2,7 @@ name: release
 
 on:
   push:
-    branches: ["master"]
-    #  - master
     tags: ["v*"]
-    #  - v*
 
 permissions:
   contents: write
@@ -29,6 +26,6 @@ jobs:
         uses: goreleaser/goreleaser-action@v5
         with:
           version: latest
-          args: release --clean
+          args: release --clean --timeout 5m
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
