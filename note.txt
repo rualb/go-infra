@@ -1,0 +1,6 @@
+/***
+Hints for unit tests:
+- Use the same package name as this.
+- Test both public and private methods (white-box and black-box modes).
+- Create an instance of `service.AppService` using `service.NewAppServiceTesting()` from the `go-infra/internal/service` package.
+***/

@@ -1,0 +1,38 @@
+
+version: 2
+
+project_name: go-infra
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: ./cmd/go-infra/main.go
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+      - -X main.ShortCommit={{.ShortCommit}}
+      - -X main.Revision={{.Commit}}
+      - -X main.Date={{.CommitDate}}
+    env:
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    goos:
+      #- linux
+      - windows
+      #- darwin
+    goarch:
+      - amd64
+      #- arm64
+    ignore:
+      - goos: windows
+        goarch: arm
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  algorithm: sha512
+  
