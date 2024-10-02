@@ -1,4 +1,4 @@
-
+project_name: go-infra
 before:
   hooks:
     - go mod tidy
