@@ -5,7 +5,7 @@ import (
 	"go-infra/internal/config"
 	"go-infra/internal/container"
 	"go-infra/internal/i18n"
-	"go-infra/internal/infra/repository"
+	"go-infra/internal/repository"
 )
 
 // AppService all services ep

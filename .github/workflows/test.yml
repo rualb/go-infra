@@ -42,11 +42,11 @@ jobs:
 
     - name: Test
       env:
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_DB: postgres
-        POSTGRES_HOST: localhost
-        POSTGRES_PORT: 5432
+        APP_DB_USER: postgres
+        APP_DB_PASSWORD: postgres
+        APP_DB_NAME: postgres
+        APP_DB_HOST: localhost
+        APP_DB_PORT: 5432
       run: |
         echo "Testing..."
         go test ./...

@@ -35,5 +35,5 @@ archives:
       - src: "configs/go-infra/*"
         dst: .
 checksum:
-  algorithm: sha512
+  algorithm: sha256
   

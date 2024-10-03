@@ -1,8 +1,7 @@
-package cmd
+package e2e
 
 import (
-	"fmt"
-	"go-infra/internal/config"
+	xcmd "go-infra/internal/cmd"
 	"go-infra/internal/tool/toolhttp"
 	"os"
 	"strings"
@@ -13,14 +12,13 @@ import (
 // TestHealthController_Check_Stats tests the ?cmd=stats case in the Check method
 func TestCmd(t *testing.T) {
 	// Setup Echo context
-	config.Testing = true
 
 	//
-
+	os.Setenv("APP_ENV", "testing")
 	os.Setenv("APP_SMS_GW_STDOUT", "1")
 	os.Setenv("APP_EMAIL_GW_STDOUT", "1")
 
-	cmd := Command{}
+	cmd := xcmd.Command{}
 
 	go cmd.Exec()
 
@@ -48,11 +46,11 @@ func TestCmd(t *testing.T) {
 			)
 
 			if err != nil {
-				t.Error("Error : %w", err)
+				t.Errorf("Error : %v", err)
 			}
 
 			if !strings.Contains(string(arr), itm.search) {
-				t.Error(fmt.Errorf("error on %v", itm.url))
+				t.Errorf("Error on %v", itm.url)
 			}
 
 		})

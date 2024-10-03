@@ -10,7 +10,7 @@ import (
 
 	i18n "go-infra/internal/i18n" // session "go-infra/session"
 
-	repository "go-infra/internal/infra/repository"
+	repository "go-infra/internal/repository"
 )
 
 // AppContainer running app container

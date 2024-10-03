@@ -61,7 +61,7 @@ func PostJSON(baseURL string, queryParams map[string]string,
 		jsonData, err := json.Marshal(bodyJSON)
 		if err != nil {
 
-			return nil, fmt.Errorf("error marshalling JSON: %w", err)
+			return nil, fmt.Errorf("error marshalling JSON: %v", err)
 		}
 		data = bytes.NewBuffer(jsonData)
 	}
@@ -83,7 +83,7 @@ func PostJSON(baseURL string, queryParams map[string]string,
 
 	if err != nil {
 
-		return nil, fmt.Errorf("error sending request: %w", err)
+		return nil, fmt.Errorf("error sending request: %v", err)
 	}
 
 	defer resp.Body.Close()
@@ -91,7 +91,7 @@ func PostJSON(baseURL string, queryParams map[string]string,
 	// Read the response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("error reading response body: %w", err)
+		return nil, fmt.Errorf("error reading response body: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
@@ -147,7 +147,7 @@ func PostFormURL(baseURL string, queryParams map[string]string,
 
 	if err != nil {
 
-		return nil, fmt.Errorf("error sending request: %w", err)
+		return nil, fmt.Errorf("error sending request: %v", err)
 	}
 
 	defer resp.Body.Close()
@@ -155,7 +155,7 @@ func PostFormURL(baseURL string, queryParams map[string]string,
 	// Read the response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("error reading response body: %w", err)
+		return nil, fmt.Errorf("error reading response body: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
@@ -192,7 +192,7 @@ func GetBytes(baseURL string, queryParams map[string]string,
 
 	if err != nil {
 
-		return nil, fmt.Errorf("error sending request: %w", err)
+		return nil, fmt.Errorf("error sending request: %v", err)
 	}
 
 	defer resp.Body.Close()
@@ -200,7 +200,7 @@ func GetBytes(baseURL string, queryParams map[string]string,
 	// Read the response
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("error reading response body: %w", err)
+		return nil, fmt.Errorf("error reading response body: %v", err)
 	}
 
 	if resp.StatusCode != http.StatusOK {

@@ -23,11 +23,20 @@ var (
 	AppDate     = ""
 	ShortCommit = ""
 )
-var (
-	Testing = false
-)
 
-type CmdLineFlags struct {
+func dumpVersionAndExitIf() {
+
+	if CmdLine.Version {
+		fmt.Printf("Version: %s\n", AppVersion)
+		fmt.Printf("Commit: %s\n", AppCommit)
+		fmt.Printf("Date: %s\n", AppDate)
+		//
+		os.Exit(0)
+	}
+
+}
+
+type CmdLineConfig struct {
 	Config     string
 	CertDir    string
 	ConfigsDir string
@@ -47,7 +56,7 @@ var envNames = []string{
 	envDevelopment, envTesting, envStaging, envProduction,
 }
 
-var CmdLine = CmdLineFlags{}
+var CmdLine = CmdLineConfig{}
 
 // ReadFlags read app flags
 func ReadFlags() {
@@ -63,19 +72,7 @@ func ReadFlags() {
 
 	flag.Parse() // dont use from init()
 
-	version()
-
-}
-
-func version() {
-
-	if CmdLine.Version {
-		fmt.Printf("Version: %s\n", AppVersion)
-		fmt.Printf("Commit: %s\n", AppCommit)
-		fmt.Printf("Date: %s\n", AppDate)
-		//
-		os.Exit(0)
-	}
+	dumpVersionAndExitIf()
 
 }
 
@@ -154,8 +151,8 @@ type Database struct {
 	Dialect   string `json:"dialect"`
 	Host      string `json:"host"`
 	Port      string `json:"port"`
-	Dbname    string `json:"dbname"`
-	Username  string `json:"username"`
+	Name      string `json:"name"`
+	User      string `json:"user"`
 	Password  string `json:"password"`
 	MaxOpen   int    `json:"max_open"`
 	MaxIdle   int    `json:"max_idle"`
@@ -187,11 +184,11 @@ type AppConfigLang struct {
 }
 
 type AppConfigMod struct {
-	Name       string   `json:"-"`
-	Env        string   `json:"env"` // prod||'' dev stage
-	Debug      bool     `json:"-"`
-	Title      string   `json:"title"`
-	Testing    bool     `json:"-"`
+	Name  string `json:"-"`
+	Env   string `json:"env"` // prod||'' dev stage
+	Debug bool   `json:"-"`
+	Title string `json:"title"`
+
 	ConfigPath []string `json:"-"` // []string{".", os.Getenv("APP_CONFIG"), flagAppConfig}
 }
 type AppConfig struct {
@@ -229,8 +226,8 @@ func NewAppConfig() *AppConfig {
 			Dialect:  "postgres",
 			Host:     "localhost",
 			Port:     "5432",
-			Dbname:   "postgres",
-			Username: "postgres",
+			Name:     "postgres",
+			User:     "postgres",
 			Password: "postgres",
 			MaxOpen:  0,
 			MaxIdle:  0,
@@ -240,14 +237,14 @@ func NewAppConfig() *AppConfig {
 		Redis: Database{
 			Host:     "localhost",
 			Port:     "6379",
-			Dbname:   "redis",
-			Username: "redis",
+			Name:     "redis",
+			User:     "redis",
 			Password: "redis",
 		},
 
 		AppConfigMod: AppConfigMod{
 			Name:       consts.AppName,
-			ConfigPath: []string{"."},
+			ConfigPath: []string{},
 			Title:      "",
 			Env:        "production",
 			Debug:      false,
@@ -318,20 +315,22 @@ func (x *AppConfig) readEnvName() error {
 	)
 
 	for i := 0; i < len(configPath); i++ {
+		if configPath[i] == "." {
+			continue
+		}
+
 		configPath[i] += "/" + x.Name
 	}
 
-	// configPath = append([]string{"."}, configPath...)
+	// if len(configPath) == 0 {
+	// 	configPath = []string{"."} // default
+	// }
 
 	if len(configPath) == 0 {
-		configPath = []string{"."} // default
+		xlog.Warn("Config path is empty")
+	} else {
+		xlog.Info("Config path: %v", configPath)
 	}
-
-	if Testing {
-		configPath = []string{} // load nothing
-	}
-
-	xlog.Info("Config path: %v", configPath)
 
 	x.ConfigPath = configPath
 
@@ -362,9 +361,17 @@ func (x *AppConfig) readEnvVar() error {
 	reader.Bool(&x.EmailGateway.HTTP, "email_gw_http", nil)
 
 	// Database configuration
+
+	reader.String(&x.DB.Dialect, "db_dialect", nil)
+	reader.String(&x.DB.Host, "db_host", nil)
+	reader.String(&x.DB.Port, "db_port", nil)
+	reader.String(&x.DB.Name, "db_name", nil)
+	reader.String(&x.DB.User, "db_user", nil)
+	reader.String(&x.DB.Password, "db_password", nil)
 	reader.Int(&x.DB.MaxOpen, "db_max_open", nil)
 	reader.Int(&x.DB.MaxIdle, "db_max_idle", nil)
 	reader.Int(&x.DB.IdleTime, "db_idle_time", nil)
+	reader.Bool(&x.DB.Migration, "db_migration", nil)
 
 	// General configuration
 	reader.String(&x.Title, "title", nil)
@@ -381,16 +388,13 @@ func (x *AppConfig) readEnvVar() error {
 
 func (x *AppConfig) validateEnv() error {
 
-	if Testing {
-		x.Env = envTesting
-	}
-
 	if x.Env == "" {
 		x.Env = envProduction
 	}
+
 	x.Debug = x.Env == envDevelopment
 	if !slices.Contains(envNames, x.Env) {
-		xlog.Info("[WARN] Non-standart env name: %v", x.Env)
+		xlog.Warn("Non-standart env name: %v", x.Env)
 	}
 
 	return nil
@@ -497,7 +501,7 @@ func (x *AppConfigSource) Load() error {
 		}
 	}
 
-	xlog.Info("New config loaded: Name=%v Env=%v Debug=%v ", res.Name, res.Env, res.Debug)
+	xlog.Info("Config loaded: Name=%v Env=%v Debug=%v ", res.Name, res.Env, res.Debug)
 
 	x.config = res
 

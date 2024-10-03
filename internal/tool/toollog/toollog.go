@@ -13,7 +13,7 @@ import (
 var DefaultLogger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 // var DefaultLogger = slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-// 	// Level: slog.LevelInfo, // Set the minimum log level to Warning
+// 	Level: slog.LevelInfo, // Set the minimum log level to Warning
 // }))
 
 // var DefaultLogger = log.New(os.Stdout, "", log.LUTC)
@@ -40,6 +40,12 @@ func Debug(format string, v ...any) {
 
 	msg := fmt.Sprintf(format, v...)
 	DefaultLogger.Debug(msg)
+}
+
+func Warn(format string, v ...any) {
+
+	msg := fmt.Sprintf(format, v...)
+	DefaultLogger.Warn(msg)
 }
 
 func Sync() {

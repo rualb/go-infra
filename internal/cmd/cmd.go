@@ -112,6 +112,6 @@ func (x *Command) startWithGracefulShutdown() {
 	defer cancel()
 	xlog.Info("Shutdown web driver")
 	if err := webDriver.Shutdown(ctx); err != nil {
-		webDriver.Logger.Error("Error on shutdown server: %w", err)
+		webDriver.Logger.Error("Error on shutdown server: %v", err)
 	}
 }

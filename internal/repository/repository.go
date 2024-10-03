@@ -113,8 +113,8 @@ func connectDatabase(
 
 	if config.Dialect == POSTGRES {
 		dsn = fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
-			config.Host, config.Port, config.Username,
-			config.Dbname, config.Password)
+			config.Host, config.Port, config.User,
+			config.Name, config.Password)
 		return gorm.Open(postgres.Open(dsn), gormConfig)
 	} else if config.Dialect == SQLITE {
 		panic("sqlite not active")

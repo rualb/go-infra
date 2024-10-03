@@ -34,7 +34,7 @@ func (sd dataSender) fillQuery(
 	if gw.Query != "" {
 
 		if err := json.Unmarshal([]byte(gw.Query), &sd.QueryData); err != nil {
-			return fmt.Errorf("query param: %w", err)
+			return fmt.Errorf("query param: %v", err)
 		}
 
 		for _, key := range slices.Collect(maps.Keys(sd.QueryData)) {
@@ -58,7 +58,7 @@ func (sd dataSender) fillBody(gw config.AppConfigMessageGateway,
 	if gw.Body != "" {
 
 		if err := json.Unmarshal([]byte(gw.Body), &sd.BodyJSON); err != nil {
-			return fmt.Errorf("body param: %w", err)
+			return fmt.Errorf("body param: %v", err)
 		}
 
 		for _, key := range slices.Collect(maps.Keys(sd.BodyJSON)) {
