@@ -53,17 +53,17 @@ func (t *TaskTimer) Start() {
 						// Execute the task.
 						err := t.task()
 						if err != nil {
-							xlog.Info("Error in task timer %s: %v", t.name, err.Error())
+							xlog.Error("Error in task timer %s: %v", t.name, err.Error())
 						}
 					}()
 				} else if t.Debug {
-					xlog.Info("Previous task is still running, skipping this step.")
+					xlog.Debug("Previous task is still running, skipping this step.")
 				}
 
 			case <-t.stopChan:
 				// Stop the timer.
 				if t.Debug {
-					xlog.Info("Task Timer stopped.")
+					xlog.Debug("Task Timer stopped.")
 				}
 				return
 			}

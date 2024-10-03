@@ -18,6 +18,7 @@ import (
 	xlog "go-infra/internal/tool/toollog"
 
 	"github.com/labstack/echo/v4"
+	elog "github.com/labstack/gommon/log"
 )
 
 type Command struct {
@@ -39,6 +40,7 @@ func (x *Command) Exec() {
 	x.AppService = service.MustNewAppServiceProd()
 
 	x.WebDriver = echo.New()
+	x.WebDriver.Logger.SetLevel(elog.INFO) // has "file":"cmd.go","line":"85"
 
 	middleware.Init(x.WebDriver, x.AppService) // 1
 	router.Init(x.WebDriver, x.AppService)     // 2
@@ -80,7 +82,7 @@ func (x *Command) startWithGracefulShutdown() {
 		applyServer(webDriver.Server, appConfig)
 		applyServer(webDriver.TLSServer, appConfig)
 
-		webDriver.Logger.Print("Server starting: ", listen)
+		xlog.Info("Server starting: %v", listen)
 
 		go func() {
 
@@ -95,9 +97,9 @@ func (x *Command) startWithGracefulShutdown() {
 
 			if err := webDriver.Start(listen); err != nil {
 				if err != http.ErrServerClosed {
-					webDriver.Logger.Errorf("%v", err)
+					xlog.Error("%v", err)
 				} else {
-					webDriver.Logger.Info("shutting down the server")
+					xlog.Info("shutting down the server")
 				}
 			}
 
@@ -112,6 +114,6 @@ func (x *Command) startWithGracefulShutdown() {
 	defer cancel()
 	xlog.Info("Shutdown web driver")
 	if err := webDriver.Shutdown(ctx); err != nil {
-		webDriver.Logger.Error("Error on shutdown server: %v", err)
+		xlog.Error("Error on shutdown server: %v", err)
 	}
 }

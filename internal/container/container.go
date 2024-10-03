@@ -71,7 +71,7 @@ func initRuntime(appConfig *config.AppConfig) {
 		}
 
 	} else {
-		xlog.Info("[ERROR] Cannot init http.Transport")
+		xlog.Error("Cannot init http.Transport")
 	}
 }
 func MustNewAppContainer() (cont AppContainer) {

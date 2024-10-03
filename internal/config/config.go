@@ -122,6 +122,30 @@ func (x *envReader) Bool(p *bool, name string, cmdValue *bool) {
 	}
 }
 
+func (x *envReader) Float64(p *float64, name string, cmdValue *float64) {
+
+	envName := strings.ToUpper(x.prefix + name) // *nix case-sensitive
+
+	if cmdValue != nil && *cmdValue < 0.0001 {
+		xlog.Info("Reading %q value from cmd: %v", name, *cmdValue)
+		*p = *cmdValue
+		return
+	}
+	if envName != "" {
+		envValue := os.Getenv(envName)
+		if envValue != "" {
+			xlog.Info("Reading %q value from env: %v = %v", name, envName, envValue)
+
+			if v, err := strconv.ParseFloat(envValue, 64); err == nil {
+				*p = v
+			} else {
+				x.envError = err
+			}
+
+		}
+	}
+
+}
 func (x *envReader) Int(p *int, name string, cmdValue *int) {
 
 	envName := strings.ToUpper(x.prefix + name) // *nix case-sensitive
@@ -378,6 +402,21 @@ func (x *AppConfig) readEnvVar() error {
 	reader.String(&x.HTTPServer.Listen, "http_listen", nil)
 	reader.String(&x.HTTPServer.CertDir, "cert_dir", &CmdLine.CertDir)
 	reader.String(&x.Configs.Dir, "configs_dir", &CmdLine.ConfigsDir)
+
+	// Http server
+	reader.Bool(&x.HTTPServer.AccessLog, "http_access_log", nil)
+	reader.Float64(&x.HTTPServer.RateLimit, "http_rate_limit", nil)
+	reader.Int(&x.HTTPServer.RateBurst, "http_rate_burst", nil)
+	reader.String(&x.HTTPServer.Listen, "http_listen", nil)
+	reader.String(&x.HTTPServer.ListenTLS, "http_listen_tls", nil)
+	reader.Bool(&x.HTTPServer.AutoTLS, "http_auto_tls", nil)
+	reader.Bool(&x.HTTPServer.RedirectHTTPS, "http_redirect_https", nil)
+	reader.Bool(&x.HTTPServer.RedirectWWW, "http_redirect_www", nil)
+	reader.String(&x.HTTPServer.CertDir, "http_cert_dir", &CmdLine.CertDir)
+	reader.Int(&x.HTTPServer.ReadTimeout, "http_read_timeout", nil)
+	reader.Int(&x.HTTPServer.WriteTimeout, "http_write_timeout", nil)
+	reader.Int(&x.HTTPServer.IdleTimeout, "http_idle_timeout", nil)
+	reader.Int(&x.HTTPServer.ReadHeaderTimeout, "http_read_header_timeout", nil)
 
 	if reader.envError != nil {
 		return reader.envError

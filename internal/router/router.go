@@ -37,7 +37,7 @@ func initConfigsController(e *echo.Echo, appService service.AppService) {
 	path, err := filepath.Abs(appConfig.Configs.Dir)
 
 	if err != nil {
-		xlog.Info("Error with configs dir: %v", appConfig.Configs.Dir)
+		xlog.Error("Error with configs dir: %v", appConfig.Configs.Dir)
 		panic(err)
 	}
 

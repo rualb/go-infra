@@ -82,6 +82,12 @@ func (sd dataSender) sendData(gw config.AppConfigMessageGateway) error {
 		sd.HeadersData["Authorization"] = "Basic " + base64.StdEncoding.EncodeToString([]byte(auth))
 	}
 
+	if gw.URL == "" {
+
+		return fmt.Errorf("error gateway URL is empty")
+
+	}
+
 	respBody, err := toolhttp.PostFormURL(gw.URL, sd.QueryData, sd.BodyForm, sd.HeadersData)
 
 	if gw.Stdout {

@@ -12,6 +12,7 @@ git add .
 git commit -m "-"
 git tag "$(cat VERSION)"
 """
+env = os.environ.copy()
 
 AppName = "go-infra"
 
@@ -30,8 +31,11 @@ def help():
     
 def build():
     print("Building the binary...")
-    subprocess.run(["go", "build",  "-C", f"cmd/{AppName}", "-o",f"./../../dist/", "-ldflags", "-s -w", ])
- 
+    env["CGO_ENABLED"] = "0"
+    env["GO111MODULE"] = "on" 
+    subprocess.run(["go", "build",  "-C", f"cmd/{AppName}", "-o",f"./../../dist/", "-ldflags", "-s -w", ], env=env)
+    # upx --best --lzma go-infra.exe 
+
 def run():
     print("Building the binary...")
     subprocess.run([f"dist/{AppName}", "-config", f"./../configs" ])

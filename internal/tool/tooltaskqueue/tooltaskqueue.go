@@ -118,7 +118,7 @@ func (x *TaskQueue[T]) runWorker() {
 				}()
 
 				if err != nil {
-					xlog.Info("task queue %s: %v", x.name, err)
+					xlog.Error("task queue %s: %v", x.name, err)
 				}
 
 			}
