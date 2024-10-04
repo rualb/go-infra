@@ -1,16 +1,14 @@
 // Package service app services
 package service
 
-import "go-infra/internal/container"
+func mustCreateRepository(appService AppService) {
 
-func createRepository(appContainer container.AppContainer) {
+	_ = appService.Repository()
 
-	_ = appContainer.Repository()
-
-	initRepositoryMasterData(appContainer)
+	mustInitRepositoryMasterData(appService)
 }
 
-func initRepositoryMasterData(appContainer container.AppContainer) {
-	_ = appContainer.Repository()
+func mustInitRepositoryMasterData(appService AppService) {
+	_ = appService.Repository()
 
 }

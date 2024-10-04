@@ -102,44 +102,6 @@ func (x *appLang) loadFromConfigFiles(configPath []string, langs []string) {
 				panic(fmt.Errorf("error reading file: %v", err))
 			}
 
-			// fullPath, err := filepath.Abs(filepath.Join(dir, fmt.Sprintf("lang.%s.json", langCode)))
-			// if err != nil {
-			// 	panic(fmt.Errorf("error on lang file name: %v", err)
-			// }
-			// fullPath = filepath.Clean(fullPath)
-			// // Open the file
-			// f, err := os.Open(fullPath)
-
-			// if os.IsNotExist(err) {
-			// 	xlog.Info("File not exists: %v", fullPath)
-			// 	continue //soft binding, no error if file not exists
-			// }
-
-			// if err != nil {
-			// 	panic(fmt.Errorf("Error opening file: %v", err)
-			// }
-
-			// defer f.Close()
-
-			// xlog.Info("Reading file: %v", fullPath)
-
-			// // Read the file content
-			// fileContent, err := io.ReadAll(f)
-
-			// if err != nil {
-			// 	panic(fmt.Errorf("Error reading file: %v", err)
-
-			// }
-
-			// // Unmarshal JSON content into a map[string]string
-			// var fileData map[string]string
-			// err = json.Unmarshal(fileContent, &fileData)
-			// if err != nil {
-			// 	panic(fmt.Errorf("Error unmarshalling JSON: %v", err)
-
-			// }
-
-			// Store the unmarshalled data into the result map
 			result[langCode] = fileData // override
 
 		}
