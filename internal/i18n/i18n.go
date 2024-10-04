@@ -140,11 +140,3 @@ func (x *userLang) LangData() map[string]string {
 
 	return x.data
 }
-
-/***
-Hints for unit tests:
-- Use the same package name as this.
-- Test both public and private methods (white-box and black-box modes).
-- Create an instance of `config.AppConfig` using `config.NewAppConfigSource().Config()` from the `go-infra/internal/config` package.
-- Create an instance of config.AppConfig.Lang using config.AppConfigLang{}
-***/
