@@ -9,3 +9,4 @@ dist/
 .env
 __*
 *.exe
+VERSION
