@@ -11,6 +11,8 @@ git init
 git add .
 git commit -m "-"
 git tag "$(cat VERSION)"
+git tag (Get-Content VERSION)
+
 """
 env = os.environ.copy()
 
