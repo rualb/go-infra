@@ -5,6 +5,7 @@ import (
 	"go-infra/internal/config"
 	"go-infra/internal/i18n"
 	"go-infra/internal/repository"
+	"os"
 	"time"
 
 	xlog "go-infra/internal/tool/toollog"
@@ -35,6 +36,10 @@ type defaultAppService struct {
 }
 
 func (x *defaultAppService) mustConfig() {
+
+	d, _ := os.Getwd()
+
+	xlog.Info("Current work dir: %v", d)
 
 	x.configSource = config.MustNewAppConfigSource()
 

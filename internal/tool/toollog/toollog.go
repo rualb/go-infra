@@ -8,6 +8,15 @@ import (
 	"os"
 )
 
+// not work in win
+// const (
+// 	colorReset  = "\033[0m"
+// 	colorRed    = "\033[31m"
+// 	colorGreen  = "\033[32m"
+// 	colorYellow = "\033[33m"
+// 	colorBlue   = "\033[34m"
+// )
+
 // var DefaultWriter = bufio.NewWriterSize(os.Stdout, 4096*10) // need mutex
 
 var DefaultLogger = slog.New(slog.NewJSONHandler(os.Stdout, nil))
@@ -52,3 +61,8 @@ func Sync() {
 	// if zap
 	fmt.Print("Log sync...")
 }
+
+// func PrintGreen(format string, v ...any) {
+// 	msg := fmt.Sprintf(format, v...)
+// 	fmt.Println(colorGreen + msg + colorReset)
+// }
