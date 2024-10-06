@@ -15,6 +15,7 @@ git tag "$(cat VERSION)"
 git tag (Get-Content VERSION)
 
 """
+
 env = os.environ.copy()
 
 AppName = "go-infra"
