@@ -339,10 +339,6 @@ func (x *AppConfig) readEnvName() error {
 	)
 
 	for i := 0; i < len(configPath); i++ {
-		if configPath[i] == "." {
-			continue
-		}
-
 		configPath[i] += "/" + x.Name
 	}
 
