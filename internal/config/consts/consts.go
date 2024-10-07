@@ -31,6 +31,8 @@ const (
 // )
 
 const (
+	PathSysMetricsAPI = "/sys/api/metrics"
+
 	PathTestPingAPI   = "/test/api/ping"
 	PathTestHealthAPI = "/test/api/health"
 	PathMessengerAPI  = "/messenger/api"

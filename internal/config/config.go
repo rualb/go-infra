@@ -43,6 +43,11 @@ type CmdLineConfig struct {
 	Env        string
 	Name       string
 	Version    bool
+
+	SysAPIKey string
+	Listen    string
+	ListenTLS string
+	ListenSys string
 }
 
 const (
@@ -64,6 +69,10 @@ func ReadFlags() {
 	_ = os.Args
 	flag.StringVar(&CmdLine.Config, "config", "", "Path to dir with config files")
 	flag.StringVar(&CmdLine.CertDir, "cert-dir", "", "Path to dir with cert files")
+	flag.StringVar(&CmdLine.SysAPIKey, "sys-api-key", "", "Sys api key")
+	flag.StringVar(&CmdLine.Listen, "listen", "", "Listen")
+	flag.StringVar(&CmdLine.ListenTLS, "listen-tls", "", "Listen TLS")
+	flag.StringVar(&CmdLine.ListenSys, "listen-sys", "", "Listen sys")
 	flag.StringVar(&CmdLine.Env, "env", "", "Environment: development, testing, staging, production")
 	flag.StringVar(&CmdLine.Name, "name", "", "App name")
 	flag.StringVar(&CmdLine.ConfigsDir, "configs-dir", "", "Path to dir with configs")
@@ -309,6 +318,8 @@ func NewAppConfig() *AppConfig {
 			Listen: "localhost:30780",
 			//ListenTLS: "localhost:30783",
 			CertDir: "",
+
+			SysAPIKey: "",
 		},
 
 		Configs: AppConfigConfigs{
@@ -395,24 +406,30 @@ func (x *AppConfig) readEnvVar() error {
 
 	// General configuration
 	reader.String(&x.Title, "title", nil)
-	reader.String(&x.HTTPServer.Listen, "http_listen", nil)
-	reader.String(&x.HTTPServer.CertDir, "cert_dir", &CmdLine.CertDir)
-	reader.String(&x.Configs.Dir, "configs_dir", &CmdLine.ConfigsDir)
 
 	// Http server
 	reader.Bool(&x.HTTPServer.AccessLog, "http_access_log", nil)
 	reader.Float64(&x.HTTPServer.RateLimit, "http_rate_limit", nil)
 	reader.Int(&x.HTTPServer.RateBurst, "http_rate_burst", nil)
-	reader.String(&x.HTTPServer.Listen, "http_listen", nil)
-	reader.String(&x.HTTPServer.ListenTLS, "http_listen_tls", nil)
+	reader.String(&x.HTTPServer.Listen, "http_listen", nil)        // =>listen
+	reader.String(&x.HTTPServer.ListenTLS, "http_listen_tls", nil) // =>listen_tls
 	reader.Bool(&x.HTTPServer.AutoTLS, "http_auto_tls", nil)
 	reader.Bool(&x.HTTPServer.RedirectHTTPS, "http_redirect_https", nil)
 	reader.Bool(&x.HTTPServer.RedirectWWW, "http_redirect_www", nil)
-	reader.String(&x.HTTPServer.CertDir, "http_cert_dir", &CmdLine.CertDir)
+	reader.String(&x.HTTPServer.CertDir, "http_cert_dir", &CmdLine.CertDir) // =>cert_dir
 	reader.Int(&x.HTTPServer.ReadTimeout, "http_read_timeout", nil)
 	reader.Int(&x.HTTPServer.WriteTimeout, "http_write_timeout", nil)
 	reader.Int(&x.HTTPServer.IdleTimeout, "http_idle_timeout", nil)
 	reader.Int(&x.HTTPServer.ReadHeaderTimeout, "http_read_header_timeout", nil)
+
+	reader.String(&x.HTTPServer.CertDir, "cert_dir", &CmdLine.CertDir) // short
+	reader.String(&x.Configs.Dir, "configs_dir", &CmdLine.ConfigsDir)
+
+	reader.String(&x.HTTPServer.Listen, "listen", &CmdLine.Listen)
+	reader.String(&x.HTTPServer.ListenTLS, "listen_tls", &CmdLine.ListenTLS)
+	reader.String(&x.HTTPServer.ListenSys, "listen_sys", &CmdLine.ListenSys)
+
+	reader.String(&x.HTTPServer.SysAPIKey, "sys_api_key", &CmdLine.SysAPIKey)
 
 	if reader.envError != nil {
 		return reader.envError
@@ -485,6 +502,10 @@ type AppConfigHTTPServer struct {
 	WriteTimeout      int `json:"write_timeout,omitempty"`       // 10 to 30 seconds, WriteTimeout > ReadTimeout
 	IdleTimeout       int `json:"idle_timeout,omitempty"`        // 60 to 120 seconds
 	ReadHeaderTimeout int `json:"read_header_timeout,omitempty"` // default get from ReadTimeout
+
+	SysMetrics bool   `json:"sys_metrics"` //
+	SysAPIKey  string `json:"sys_api_key"`
+	ListenSys  string `json:"listen_sys"`
 }
 type AppConfigConfigs struct {
 	Dir string `json:"dir"`
