@@ -48,6 +48,8 @@ type CmdLineConfig struct {
 	Listen    string
 	ListenTLS string
 	ListenSys string
+
+	DumpConfig bool
 }
 
 const (
@@ -78,6 +80,8 @@ func ReadFlags() {
 	flag.StringVar(&CmdLine.ConfigsDir, "configs-dir", "", "Path to dir with configs")
 
 	flag.BoolVar(&CmdLine.Version, "version", false, "App version")
+
+	flag.BoolVar(&CmdLine.DumpConfig, "dump-config", false, "Dump Config")
 
 	flag.Parse() // dont use from init()
 
@@ -561,9 +565,10 @@ func (x *AppConfigSource) Load() error {
 
 	x.config = res
 
-	// data, _ := json.MarshalIndent(res, "", "\t")
-
-	// toolfile.WriteBytes("./dump.json", data)
+	if CmdLine.DumpConfig {
+		data, _ := json.MarshalIndent(res, "", " ")
+		fmt.Println(string(data))
+	}
 
 	return nil
 }
