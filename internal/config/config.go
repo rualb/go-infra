@@ -9,6 +9,7 @@ import (
 	"go-infra/internal/tool/toolconfig"
 	"go-infra/internal/tool/toolhttp"
 	xlog "go-infra/internal/tool/toollog"
+	"math"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -139,15 +140,16 @@ func (x *envReader) Float64(p *float64, name string, cmdValue *float64) {
 
 	envName := strings.ToUpper(x.prefix + name) // *nix case-sensitive
 
-	if cmdValue != nil && *cmdValue < 0.0001 {
-		xlog.Info("Reading %q value from cmd: %v", name, *cmdValue)
+	if cmdValue != nil && math.Abs(*cmdValue) > 0.000001 {
+		xlog.Info("Reading float64 %q value from cmd: %v", name, *cmdValue)
 		*p = *cmdValue
 		return
 	}
+
 	if envName != "" {
 		envValue := os.Getenv(envName)
 		if envValue != "" {
-			xlog.Info("Reading %q value from env: %v = %v", name, envName, envValue)
+			xlog.Info("Reading float64 %q value from env: %v = %v", name, envName, envValue)
 
 			if v, err := strconv.ParseFloat(envValue, 64); err == nil {
 				*p = v
@@ -425,6 +427,8 @@ func (x *AppConfig) readEnvVar() error {
 	reader.Int(&x.HTTPServer.WriteTimeout, "http_write_timeout", nil)
 	reader.Int(&x.HTTPServer.IdleTimeout, "http_idle_timeout", nil)
 	reader.Int(&x.HTTPServer.ReadHeaderTimeout, "http_read_header_timeout", nil)
+	reader.String(&x.HTTPServer.ListenSys, "http_listen_sys", nil)  // =>listen_sys
+	reader.String(&x.HTTPServer.SysAPIKey, "http_sys_api_key", nil) // =>sys_api_key
 
 	reader.String(&x.HTTPServer.CertDir, "cert_dir", &CmdLine.CertDir) // short
 	reader.String(&x.Configs.Dir, "configs_dir", &CmdLine.ConfigsDir)
@@ -510,6 +514,8 @@ type AppConfigHTTPServer struct {
 	SysMetrics bool   `json:"sys_metrics"` //
 	SysAPIKey  string `json:"sys_api_key"`
 	ListenSys  string `json:"listen_sys"`
+
+	
 }
 type AppConfigConfigs struct {
 	Dir string `json:"dir"`
