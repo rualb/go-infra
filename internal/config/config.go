@@ -321,8 +321,8 @@ func NewAppConfig() *AppConfig {
 			RateLimit: 0,
 			RateBurst: 0,
 
-			Listen: "localhost:30780",
-			//ListenTLS: "localhost:30783",
+			Listen: "127.0.0.1:30780",
+			//ListenTLS: "127.0.0.1:30783",
 			CertDir: "",
 
 			SysAPIKey: "",
@@ -514,8 +514,6 @@ type AppConfigHTTPServer struct {
 	SysMetrics bool   `json:"sys_metrics"` //
 	SysAPIKey  string `json:"sys_api_key"`
 	ListenSys  string `json:"listen_sys"`
-
-	
 }
 type AppConfigConfigs struct {
 	Dir string `json:"dir"`

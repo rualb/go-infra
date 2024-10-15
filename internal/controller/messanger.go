@@ -1,8 +1,8 @@
 package controller
 
 // Handler web req handler
-// benchmark db http://localhost:30780/messenger/api?service_code=sms_secret_code&to=+000123456789&secret_code=123456&lang=en
-// benchmark db http://localhost:30780/messenger/api?service_code=email_secret_code&to=test@example.com&secret_code=123456&lang=en
+// benchmark db http://127.0.0.1:30780/messenger/api?service_code=sms_secret_code&to=+000123456789&secret_code=123456&lang=en
+// benchmark db http://127.0.0.1:30780/messenger/api?service_code=email_secret_code&to=test@example.com&secret_code=123456&lang=en
 
 import (
 	"fmt"
@@ -36,6 +36,7 @@ type smsSecretCodeData struct {
 	Message    service.SmsMessage
 	SecretCode string
 }
+
 type emailSecretCodeData struct {
 	Message    service.EmailMessage
 	SecretCode string
