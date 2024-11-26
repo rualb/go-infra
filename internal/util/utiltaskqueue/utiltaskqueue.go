@@ -1,10 +1,10 @@
-// Package tooltaskqueue task queue tool
-package tooltaskqueue
+// Package utiltaskqueue task queue tool
+package utiltaskqueue
 
 import (
 	"container/list"
 	"fmt"
-	xlog "go-infra/internal/tool/toollog"
+	xlog "go-infra/internal/util/utillog"
 	"sync"
 )
 

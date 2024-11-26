@@ -42,7 +42,7 @@ type emailSecretCodeData struct {
 	SecretCode string
 }
 
-type messageDto struct {
+type messageDTO struct {
 	To         string `form:"to"`
 	Text       string `form:"text"`
 	HTML       string `form:"html"`
@@ -50,7 +50,7 @@ type messageDto struct {
 	Lang       string `form:"lang"`
 }
 
-func (x messageDto) validate() any {
+func (x messageDTO) validate() any {
 
 	if x.To == "" {
 		return map[string]string{
@@ -76,7 +76,7 @@ func (x *MessengerController) SmsText() error {
 	*/
 
 	c := x.webCtxt
-	dto := &messageDto{}
+	dto := &messageDTO{}
 	err := c.Bind(dto)
 	if err != nil {
 		return err
@@ -107,7 +107,7 @@ func (x *MessengerController) SmsText() error {
 func (x *MessengerController) SmsSecretCode() error {
 
 	c := x.webCtxt
-	dto := &messageDto{}
+	dto := &messageDTO{}
 	err := c.Bind(dto)
 	if err != nil {
 		return err
@@ -141,7 +141,7 @@ func (x *MessengerController) SmsSecretCode() error {
 func (x *MessengerController) EmailHTML() error {
 
 	c := x.webCtxt
-	dto := &messageDto{}
+	dto := &messageDTO{}
 	err := c.Bind(dto)
 	if err != nil {
 		return err
@@ -174,7 +174,7 @@ func (x *MessengerController) EmailSecretCode() error {
 	appConfig := x.appService.Config()
 
 	c := x.webCtxt
-	dto := &messageDto{}
+	dto := &messageDTO{}
 	err := c.Bind(dto)
 	if err != nil {
 		return err

@@ -15,7 +15,7 @@ import (
 
 	"go-infra/internal/router"
 
-	xlog "go-infra/internal/tool/toollog"
+	xlog "go-infra/internal/util/utillog"
 
 	"github.com/labstack/echo/v4"
 	elog "github.com/labstack/gommon/log"

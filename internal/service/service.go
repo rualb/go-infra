@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	xlog "go-infra/internal/tool/toollog"
+	xlog "go-infra/internal/util/utillog"
 	"net/http"
 )
 

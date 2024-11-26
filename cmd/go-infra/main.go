@@ -5,7 +5,7 @@ import (
 	"go-infra/internal/config"
 
 	"go-infra/internal/config/consts"
-	xlog "go-infra/internal/tool/toollog"
+	xlog "go-infra/internal/util/utillog"
 )
 
 //nolint:gochecknoglobals
@@ -28,13 +28,3 @@ func main() {
 
 	x.Exec()
 }
-
-// // Qwe1 func Qwe1 and arg x, y are unused
-// func Qwe1(x string) {
-// 	qwe2("y")
-// }
-
-// // qwe2 arg x is unused
-// func qwe2(y string) {
-
-// }

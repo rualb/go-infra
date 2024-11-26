@@ -14,7 +14,7 @@ import (
 	"go-infra/internal/config/consts"
 	"go-infra/internal/service"
 
-	xlog "go-infra/internal/tool/toollog"
+	xlog "go-infra/internal/util/utillog"
 
 	"github.com/labstack/echo-contrib/echoprometheus"
 	"github.com/labstack/echo/v4/middleware"

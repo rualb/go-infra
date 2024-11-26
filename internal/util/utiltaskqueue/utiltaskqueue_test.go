@@ -1,4 +1,4 @@
-package tooltaskqueue
+package utiltaskqueue
 
 import (
 	"errors"

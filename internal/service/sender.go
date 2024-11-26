@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-infra/internal/config"
-	"go-infra/internal/tool/toolhttp"
-	xlog "go-infra/internal/tool/toollog"
+	"go-infra/internal/util/utilhttp"
+	xlog "go-infra/internal/util/utillog"
 	"maps"
 	"slices"
 )
@@ -88,7 +88,7 @@ func (sd dataSender) sendData(gw config.AppConfigMessageGateway) error {
 
 	}
 
-	respBody, err := toolhttp.PostFormURL(gw.URL, sd.QueryData, sd.BodyForm, sd.HeadersData)
+	respBody, err := utilhttp.PostFormURL(gw.URL, sd.QueryData, sd.BodyForm, sd.HeadersData)
 
 	if gw.Stdout {
 		if err != nil && len(respBody) > 0 {

@@ -1,8 +1,8 @@
 // Package tooltasktimer run task by timer
-package tooltasktimer
+package utiltasktimer
 
 import (
-	xlog "go-infra/internal/tool/toollog"
+	xlog "go-infra/internal/util/utillog"
 	"sync"
 	"time"
 )

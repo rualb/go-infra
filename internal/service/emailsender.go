@@ -3,8 +3,8 @@ package service
 import (
 	"fmt"
 	"go-infra/internal/config"
-	xlog "go-infra/internal/tool/toollog"
-	"go-infra/internal/tool/tooltaskqueue"
+	xlog "go-infra/internal/util/utillog"
+	"go-infra/internal/util/utiltaskqueue"
 	"time"
 )
 
@@ -24,7 +24,7 @@ type EmailSender interface {
 
 type emailSender struct {
 	Debug     bool
-	taskQueue *tooltaskqueue.TaskQueue[EmailMessage]
+	taskQueue *utiltaskqueue.TaskQueue[EmailMessage]
 }
 
 func (x *emailSender) Send(message EmailMessage) error {
@@ -95,6 +95,6 @@ func NewEmailSender(appConfig *config.AppConfig) EmailSender {
 
 	return &emailSender{
 		Debug:     appConfig.Debug,
-		taskQueue: tooltaskqueue.NewTaskQueue("email sender", tq.handlerEmail, 1),
+		taskQueue: utiltaskqueue.NewTaskQueue("email sender", tq.handlerEmail, 1),
 	}
 }

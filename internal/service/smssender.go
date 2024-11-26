@@ -3,8 +3,8 @@ package service
 import (
 	"fmt"
 	"go-infra/internal/config"
-	xlog "go-infra/internal/tool/toollog"
-	"go-infra/internal/tool/tooltaskqueue"
+	xlog "go-infra/internal/util/utillog"
+	"go-infra/internal/util/utiltaskqueue"
 	"time"
 )
 
@@ -23,7 +23,7 @@ type SmsSender interface {
 
 type smsSender struct {
 	Debug     bool
-	taskQueue *tooltaskqueue.TaskQueue[SmsMessage]
+	taskQueue *utiltaskqueue.TaskQueue[SmsMessage]
 }
 
 func (x *smsSender) Send(message SmsMessage) error {
@@ -89,7 +89,7 @@ func NewSmsSender(appConfig *config.AppConfig) SmsSender {
 
 	return &smsSender{
 		Debug:     appConfig.Debug,
-		taskQueue: tooltaskqueue.NewTaskQueue("sms sender", tq.handlerSms, 1),
+		taskQueue: utiltaskqueue.NewTaskQueue("sms sender", tq.handlerSms, 1),
 	}
 
 }

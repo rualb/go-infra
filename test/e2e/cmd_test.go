@@ -2,7 +2,7 @@ package e2e
 
 import (
 	xcmd "go-infra/internal/cmd"
-	"go-infra/internal/tool/toolhttp"
+	"go-infra/internal/util/utilhttp"
 	"os"
 	"strings"
 	"testing"
@@ -41,7 +41,7 @@ func TestCmd(t *testing.T) {
 		t.Run(itm.title, func(t *testing.T) {
 
 			t.Logf("url %v", itm.url)
-			arr, err := toolhttp.PostFormURL(itm.url,
+			arr, err := utilhttp.PostFormURL(itm.url,
 				nil, itm.form, nil,
 			)
 

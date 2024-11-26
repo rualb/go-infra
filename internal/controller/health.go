@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"go-infra/internal/service"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
@@ -53,11 +52,6 @@ func (x *HealthController) Check() error {
 		} else {
 			res = val
 		}
-
-	case "length":
-
-		length, _ := strconv.Atoi(c.QueryParam("length"))
-		res = stringOfLength(x.appService, length)
 
 	case "stats":
 
