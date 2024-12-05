@@ -1,8 +1,8 @@
 package controller
 
 // Handler web req handler
-// benchmark db http://127.0.0.1:30780/messenger/api?service_code=sms_secret_code&to=+000123456789&secret_code=123456&lang=en
-// benchmark db http://127.0.0.1:30780/messenger/api?service_code=email_secret_code&to=test@example.com&secret_code=123456&lang=en
+// benchmark db http://127.0.0.1:30780/sys/api/messenger?service_code=sms_secret_code&to=+000123456789&secret_code=123456&lang=en
+// benchmark db http://127.0.0.1:30780/sys/api/messenger?service_code=email_secret_code&to=test@example.com&secret_code=123456&lang=en
 
 import (
 	"fmt"
@@ -72,7 +72,7 @@ func (x messageDTO) validate() any {
 // SmsText send sms text
 func (x *MessengerController) SmsText() error {
 	/*
-		url /messenger/api?to=123&text=foo
+		url /sys/api/messenger?to=123&text=foo
 	*/
 
 	c := x.webCtxt

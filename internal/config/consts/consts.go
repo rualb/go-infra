@@ -4,8 +4,8 @@ package consts
 const AppName = "go-infra"
 
 const (
-	// DefaultTextSize default size of text field
-	DefaultTextSize = 100
+	// DefaultTextLength default size of text field
+	DefaultTextLength = 100
 
 	// WF_STATUS_NEW       = 0
 	// WF_STATUS_PROGRESS  = 6
@@ -33,8 +33,8 @@ const (
 const (
 	PathSysMetricsAPI = "/sys/api/metrics"
 
-	PathTestPingAPI   = "/test/api/ping"
-	PathTestHealthAPI = "/test/api/health"
-	PathMessengerAPI  = "/messenger/api"
-	PathConfigsAPI    = "/configs/api"
+	PathInfraPingDebugAPI = "/infra/api/ping"
+
+	PathSysMessengerAPI = "/sys/api/messenger" // "/messenger/api"
+	PathSysConfigsAPI   = "/sys/api/configs"   // "/configs/api"
 )

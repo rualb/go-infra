@@ -135,12 +135,6 @@ func checkStats(appService service.AppService) (string, error) {
 
 	return bu.String(), nil
 }
-func stringOfLength(_ service.AppService, length int) string {
-
-	length = min(max(length, 0), 32000)
-
-	return strings.Repeat("A", length)
-}
 
 func checkRunDBRaw(appService service.AppService) (string, error) {
 

@@ -22,7 +22,7 @@ import (
 
 func Init(e *echo.Echo, appService service.AppService) {
 
-	initHealthController(e, appService)
+	initDebugController(e, appService)
 
 	initMessengerController(e, appService)
 
@@ -108,7 +108,7 @@ func initSys(e *echo.Echo, appService service.AppService) {
 }
 func initConfigsController(e *echo.Echo, appService service.AppService) {
 
-	// http://127.0.0.1:30780/configs/api/go-auth/config.development.json
+	// http://127.0.0.1:30780/sys/api/configs/go-auth/config.development.json
 	appConfig := appService.Config()
 
 	if appConfig.Configs.Dir == "" {
@@ -130,28 +130,14 @@ func initConfigsController(e *echo.Echo, appService service.AppService) {
 
 	xlog.Info("Configs from dir: %v", path)
 
-	e.Static(consts.PathConfigsAPI, path)
+	e.Static(consts.PathSysConfigsAPI, path)
 
 	//
 
 }
 
-func initHealthController(e *echo.Echo, appService service.AppService) {
-
-	controller.SelfTest(appService)
-
-	handler := func(c echo.Context) error {
-		ctrl := controller.NewHealthController(appService, c)
-		return ctrl.Check()
-	}
-
-	e.GET(consts.PathTestHealthAPI, handler)
-	//
-	e.GET(consts.PathTestPingAPI, func(c echo.Context) error {
-
-		return c.String(http.StatusOK, "pong")
-
-	})
+func initDebugController(e *echo.Echo, _ service.AppService) {
+	e.GET(consts.PathInfraPingDebugAPI, func(c echo.Context) error { return c.String(http.StatusOK, "pong") })
 
 }
 func initMessengerController(e *echo.Echo, appService service.AppService) {
@@ -160,7 +146,7 @@ func initMessengerController(e *echo.Echo, appService service.AppService) {
 		return controller.NewMessengerController(appService, c)
 	}
 
-	group := e.Group(consts.PathMessengerAPI)
+	group := e.Group(consts.PathSysMessengerAPI)
 
 	group.POST("/sms-text", func(c echo.Context) error { return factory(c).SmsText() })
 	group.POST("/email-html", func(c echo.Context) error { return factory(c).EmailHTML() })

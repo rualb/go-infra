@@ -1,4 +1,4 @@
-// Package tooltasktimer run task by timer
+// Package utiltasktimer run task by timer
 package utiltasktimer
 
 import (
