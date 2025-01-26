@@ -88,11 +88,11 @@ func (sd dataSender) sendData(gw config.AppConfigMessageGateway) error {
 
 	}
 
-	respBody, err := utilhttp.PostFormURL(gw.URL, sd.QueryData, sd.BodyForm, sd.HeadersData)
+	respBody, err := utilhttp.PostFormURL(gw.URL, sd.QueryData, sd.HeadersData, sd.BodyForm)
 
 	if gw.Stdout {
 		if err != nil && len(respBody) > 0 {
-			xlog.Info("Resp: %s", string(respBody))
+			xlog.Info("resp: %s", string(respBody))
 		}
 	}
 

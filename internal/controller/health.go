@@ -79,7 +79,7 @@ func SelfTest(_ service.AppService) {
 	// 	for i := 0; i < count; i++ {
 	// 		_, _ = checkRunDB(appService)
 	// 	}
-	// 	xlog.Info("Self test RunDb Msec:%v Count:%v", time.Since(df).Milliseconds(), count)
+	// 	xlog.Info("self test RunDb Msec:%v Count:%v", time.Since(df).Milliseconds(), count)
 	// }
 
 	// {
@@ -88,7 +88,7 @@ func SelfTest(_ service.AppService) {
 	// 	for i := 0; i < count; i++ {
 	// 		_, _ = checkRunDBRaw(appService)
 	// 	}
-	// 	xlog.Info("Self test RunDbRaw Msec:%v Count:%v", time.Since(df).Milliseconds(), count)
+	// 	xlog.Info("self test RunDbRaw Msec:%v Count:%v", time.Since(df).Milliseconds(), count)
 	// }
 
 }

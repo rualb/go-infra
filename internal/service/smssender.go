@@ -56,7 +56,7 @@ func (x smsTaskQueue) handlerSms(smsMessage *SmsMessage) error {
 	smsMessage.From = gw.From
 
 	if x.Debug || gw.Stdout {
-		xlog.Info("To: `%v` Message: `%v`", smsMessage.To, smsMessage.Text)
+		xlog.Info("to: `%v` message: `%v`", smsMessage.To, smsMessage.Text)
 	}
 
 	if gw.HTTP {

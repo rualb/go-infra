@@ -61,7 +61,7 @@ func (x emailTaskQueue) handlerEmail(emailMessage *EmailMessage) error {
 	emailMessage.From = gw.From
 
 	if x.Debug || gw.Stdout {
-		xlog.Info("To: `%v` Subject: `%v` Message: `%v`", emailMessage.To, emailMessage.Subject, emailMessage.HTML)
+		xlog.Info("to: `%v` subject: `%v` message: `%v`", emailMessage.To, emailMessage.Subject, emailMessage.HTML)
 	}
 
 	if gw.HTTP {

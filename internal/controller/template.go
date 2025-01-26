@@ -10,22 +10,22 @@ import (
 //go:embed template/*.html
 var fsTemplate embed.FS
 
-type templateEmailSecretCodeData struct {
-	LangCode        string
-	AppTitle        string
-	LabelSecretCode string
-	SecretCode      string
-	Subject         string
+type templateEmailPasscodeData struct {
+	LangCode      string
+	AppTitle      string
+	LabelPasscode string
+	Passcode      string
+	Subject       string
 }
 
-var templateEmailSecretCode *template.Template
+var templateEmailPasscode *template.Template
 
 var mu sync.Mutex
 
-// TemplateEmailSecretCode get template
-func TemplateEmailSecretCode() *template.Template {
+// TemplateEmailPasscode get template
+func TemplateEmailPasscode() *template.Template {
 
-	tmpl := templateEmailSecretCode
+	tmpl := templateEmailPasscode
 
 	if tmpl != nil {
 		return tmpl
@@ -34,13 +34,13 @@ func TemplateEmailSecretCode() *template.Template {
 	mu.Lock()
 	defer mu.Unlock()
 
-	tmpl = templateEmailSecretCode // recheck
+	tmpl = templateEmailPasscode // recheck
 
 	if tmpl == nil {
 
 		{
 
-			data, err := fsTemplate.ReadFile("template/email_secret_code.html")
+			data, err := fsTemplate.ReadFile("template/email_passcode.html")
 			if err != nil {
 				panic(err)
 			}
@@ -54,13 +54,13 @@ func TemplateEmailSecretCode() *template.Template {
 		{
 			// test cached
 			bu := strings.Builder{}
-			err := tmpl.Execute(&bu, templateEmailSecretCodeData{})
+			err := tmpl.Execute(&bu, templateEmailPasscodeData{})
 			if err != nil {
 				panic(err)
 			}
 		}
 
-		templateEmailSecretCode = tmpl
+		templateEmailPasscode = tmpl
 
 	}
 

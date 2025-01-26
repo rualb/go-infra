@@ -44,7 +44,7 @@ func (t *TaskTimer) Start() {
 						defer func() {
 							// Ensure any panic in the task does not crash the program.
 							if r := recover(); r != nil {
-								xlog.Info("Recovered from panic: %v", r)
+								xlog.Info("recovered from panic: %v", r)
 							}
 							// Mark the task as completed.
 							t.mutex.Unlock()
@@ -53,17 +53,17 @@ func (t *TaskTimer) Start() {
 						// Execute the task.
 						err := t.task()
 						if err != nil {
-							xlog.Error("Error in task timer %s: %v", t.name, err.Error())
+							xlog.Error("error in task timer %s: %v", t.name, err.Error())
 						}
 					}()
 				} else if t.Debug {
-					xlog.Debug("Previous task is still running, skipping this step.")
+					xlog.Debug("previous task is still running, skipping this step.")
 				}
 
 			case <-t.stopChan:
 				// Stop the timer.
 				if t.Debug {
-					xlog.Debug("Task Timer stopped.")
+					xlog.Debug("task timer stopped.")
 				}
 				return
 			}
@@ -80,7 +80,7 @@ func (t *TaskTimer) Stop() {
 
 // 	//5 ticks, 3 skips
 // 	sampleTask := func() error {
-// 		fmt.Println("Running task at:", time.Now())
+// 		fmt.Println("running task at:", time.Now())
 // 		time.Sleep(5 * time.Second) // Simulate a task taking 3 seconds
 // 		return fmt.Errorf("error 2: %v", fmt.Errorf("error 1"))
 // 	}
@@ -95,5 +95,5 @@ func (t *TaskTimer) Stop() {
 // 	time.Sleep(10 * time.Second)
 // 	timer.Stop()
 // 	time.Sleep(1 * time.Second)
-// 	//fmt.Println("Task Timer stopped.")
+// 	//fmt.Println("task Timer stopped.")
 // }

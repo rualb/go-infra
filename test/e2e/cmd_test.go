@@ -30,8 +30,8 @@ func TestCmd(t *testing.T) {
 		form   map[string]string
 		search string
 	}{
-		{title: "test email-secret-code", search: "123456789", url: "http://127.0.0.1:30780/sys/api/messenger/email-secret-code", form: map[string]string{"to": "test@example.com", "secret_code": "123456789", "lang": "en"}},
-		{title: "test sms-secret-code", search: "123456789", url: "http://127.0.0.1:30780/sys/api/messenger/sms-secret-code", form: map[string]string{"to": "123456", "secret_code": "123456789", "lang": "en"}},
+		{title: "test email-passcode", search: "123456789", url: "http://127.0.0.1:30780/sys/api/messenger/email-passcode", form: map[string]string{"to": "test@example.com", "passcode": "123456789", "lang": "en"}},
+		{title: "test sms-passcode", search: "123456789", url: "http://127.0.0.1:30780/sys/api/messenger/sms-passcode", form: map[string]string{"to": "123456", "passcode": "123456789", "lang": "en"}},
 		{title: "test email-html", search: "123456789", url: "http://127.0.0.1:30780/sys/api/messenger/email-html", form: map[string]string{"to": "test@example.com", "html": "123456789"}},
 		{title: "test sms-text", search: "123456789", url: "http://127.0.0.1:30780/sys/api/messenger/sms-text", form: map[string]string{"to": "123456", "text": "123456789"}},
 	}
@@ -42,7 +42,7 @@ func TestCmd(t *testing.T) {
 
 			t.Logf("url %v", itm.url)
 			arr, err := utilhttp.PostFormURL(itm.url,
-				nil, itm.form, nil,
+				nil, nil, itm.form,
 			)
 
 			if err != nil {

@@ -55,7 +55,7 @@ func initSys(e *echo.Echo, appService service.AppService) {
 	}
 
 	if !hasAPIKey {
-		xlog.Panic("Sys api key is empty")
+		xlog.Panic("sys api key is empty")
 		return
 	}
 
@@ -66,7 +66,7 @@ func initSys(e *echo.Echo, appService service.AppService) {
 		e.Use(middleware.Recover())
 		// e.Use(middleware.Logger())
 	} else {
-		xlog.Warn("Sys api serve in main listener: %v", listen)
+		xlog.Warn("sys api serve in main listener: %v", listen)
 	}
 
 	sysAPIAccessAuthMW := middleware.KeyAuthWithConfig(middleware.KeyAuthConfig{
@@ -90,7 +90,7 @@ func initSys(e *echo.Echo, appService service.AppService) {
 
 		// start as async task
 		go func() {
-			xlog.Info("Sys api serve on: %v main: %v", listenSys, listen)
+			xlog.Info("sys api serve on: %v main: %v", listenSys, listen)
 
 			if err := e.Start(listenSys); err != nil {
 				if err != http.ErrServerClosed {
@@ -102,7 +102,7 @@ func initSys(e *echo.Echo, appService service.AppService) {
 		}()
 
 	} else {
-		xlog.Info("Sys api server serve on main listener: %v", listen)
+		xlog.Info("sys api server serve on main listener: %v", listen)
 	}
 
 }
@@ -118,7 +118,7 @@ func initConfigsController(e *echo.Echo, appService service.AppService) {
 	path, err := filepath.Abs(appConfig.Configs.Dir)
 
 	if err != nil {
-		xlog.Error("Error with configs dir: %v", appConfig.Configs.Dir)
+		xlog.Error("error with configs dir: %v", appConfig.Configs.Dir)
 		panic(err)
 	}
 
@@ -128,7 +128,7 @@ func initConfigsController(e *echo.Echo, appService service.AppService) {
 		panic(fmt.Errorf("error directory does not exist: %v", path))
 	}
 
-	xlog.Info("Configs from dir: %v", path)
+	xlog.Info("configs from dir: %v", path)
 
 	e.Static(consts.PathSysConfigsAPI, path)
 
@@ -152,8 +152,8 @@ func initMessengerController(e *echo.Echo, appService service.AppService) {
 
 	group.POST("/sms-text", func(c echo.Context) error { return factory(c).SmsText() })
 	group.POST("/email-html", func(c echo.Context) error { return factory(c).EmailHTML() })
-	group.POST("/sms-secret-code", func(c echo.Context) error { return factory(c).SmsSecretCode() })
-	group.POST("/email-secret-code", func(c echo.Context) error { return factory(c).EmailSecretCode() })
+	group.POST("/sms-passcode", func(c echo.Context) error { return factory(c).SmsPasscode() })
+	group.POST("/email-passcode", func(c echo.Context) error { return factory(c).EmailPasscode() })
 
 	//
 
