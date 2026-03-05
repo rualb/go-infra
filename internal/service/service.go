@@ -60,7 +60,9 @@ func (x *defaultAppService) mustBuild() {
 	x.smsSender = NewSmsSender(appConfig)
 	x.emailSender = NewEmailSender(appConfig)
 
-	mustCreateRepository(x)
+	if appConfig.DB.Migration {
+		mustCreateRepository(x) //
+	}
 }
 
 func mustConfigRuntime(appConfig *config.AppConfig) {
