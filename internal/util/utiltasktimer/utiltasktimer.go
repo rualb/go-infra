@@ -81,7 +81,7 @@ func (t *TaskTimer) Stop() {
 // 	//5 ticks, 3 skips
 // 	sampleTask := func() error {
 // 		fmt.Println("running task at:", time.Now())
-// 		time.Sleep(5 * time.Second) // Simulate a task taking 3 seconds
+// 		time.Sleep(1 * time.Second) // Simulate a task taking 3 seconds
 // 		return fmt.Errorf("error 2: %v", fmt.Errorf("error 1"))
 // 	}
 
