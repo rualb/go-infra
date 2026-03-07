@@ -1,6 +1,6 @@
 # go-infra
 
-`go-infra` is a Go-based infrastructure utility service designed to provide common shared functionalities for distributed systems and microservices. It centralizes messaging (SMS/Email), configuration distribution, health monitoring, and internationalization.
+`go-infra` is Go-based infrastructure utility service designed to provide common shared functionalities for distributed systems and microservices. It centralizes messaging (SMS/Email), configuration distribution, health monitoring, and internationalization.
 
 This service is designed to be a lightweight, high-performance "sidekick" or central utility that other services in your ecosystem can call upon.
 
